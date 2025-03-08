@@ -1,16 +1,20 @@
 {
+  "homepage": "https://archit1496.github.io/search-box",
   "name": "search-box-component",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "start": "vite",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest"
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -29,7 +33,7 @@
     "jsdom": "^26.0.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0",
-    "vitest": "^0.34.6"
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
   }
 }
