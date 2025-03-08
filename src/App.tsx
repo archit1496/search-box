@@ -15,7 +15,8 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const searchComments = async (term: string) => {
-    if (term.length === 0 || term.length <= 3) {
+    if (term.length <= 3) {
+      setResults([])
       return
     }
 
@@ -27,7 +28,8 @@ function App() {
       const data = await response.json()
       setResults(data.slice(0, 20))
     } catch (err) {
-      alert('Failed to fetch results')
+      setResults([])
+      console.error('Failed to fetch results:', err)
     } finally {
       setIsLoading(false)
     }
