@@ -73,13 +73,15 @@ function App() {
         {!isLoading && results.length === 0 && searchTerm.length > 3 && (
           <div className="no-results">No results found</div>
         )}
-        {!isLoading && results.map(comment => (
-          <div key={comment.id} className="result-item">
-            <h3>{comment.name}</h3>
-            <p>{comment.email}</p>
-            <p>{comment.body.substring(0, 64)}{comment.body.length > 64 ? '...' : ''}</p>
-          </div>
-        ))}
+        {!isLoading && results.length>0 && <div className="results-scroll">
+          {results.map(comment => (
+            <div key={comment.id} className="result-item">
+              <h3>{comment.name}</h3>
+              <p>{comment.email}</p>
+              <p>{comment.body.substring(0, 64)}{comment.body.length > 64 ? '...' : ''}</p>
+            </div>
+          ))}
+        </div>}
       </div>
     </div>
   )
