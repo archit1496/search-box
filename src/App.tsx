@@ -12,17 +12,14 @@ interface Comment {
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [results, setResults] = useState<Comment[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const searchComments = async (term: string) => {
-    if (term.length === 0) {
-      return
-    }
-    if ( term.length < 3) 
-    {
-      alert("Text should be more than 3")
+    if (term.length === 0 || term.length <= 3) {
       return
     }
 
+    setIsLoading(true)
     try {
       const response = await fetch(
         `https://jsonplaceholder.typicode.com/comments?q=${encodeURIComponent(term)}`
@@ -31,6 +28,8 @@ function App() {
       setResults(data.slice(0, 20))
     } catch (err) {
       alert('Failed to fetch results')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -62,13 +61,19 @@ function App() {
           type="text"
           value={searchTerm}
           onChange={handleInputChange}
-          placeholder="Search comments (min. 3 characters)"
+          placeholder="Search comments (more than 3 characters)"
         />
-        <button type="submit">Search</button>
+        <button type="submit" disabled={isLoading}>
+            Search
+        </button>
       </form>
 
       <div className="results">
-        {results.map((comment: Comment) => (
+        {isLoading && <div className="loading">Loading...</div>}
+        {!isLoading && results.length === 0 && searchTerm.length > 3 && (
+          <div className="no-results">No results found</div>
+        )}
+        {!isLoading && results.map(comment => (
           <div key={comment.id} className="result-item">
             <h3>{comment.name}</h3>
             <p>{comment.email}</p>
