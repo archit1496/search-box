@@ -27,16 +27,14 @@ function App() {
       )
       const data = await response.json()
       setResults(data.slice(0, 20))
-    } catch (err) {
-      setResults([])
-      console.error('Failed to fetch results:', err)
+    } catch (error) {
+      console.error('Failed to fetch results:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
   // debounce search
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       searchComments(searchTerm)

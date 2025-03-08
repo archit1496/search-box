@@ -35,8 +35,10 @@ describe('App Component', () => {
     ];
     
     globalFetch.mockResolvedValueOnce({
-      json: async () => mockComments
-    });
+      ok: true, 
+      status: 200, 
+      json: async () => mockComments, 
+    } as Response);
 
     render(<App />);
     const input = screen.getByPlaceholderText('Search comments (more than 3 characters)');
@@ -59,8 +61,24 @@ describe('App Component', () => {
   it('should show loading state while fetching', async () => {
     // Mock fetch to delay response
     globalFetch.mockImplementationOnce(() => 
-      new Promise(resolve => 
-        setTimeout(() => resolve({ json: () => Promise.resolve([]) }), 100)
+      new Promise<Response>(resolve => 
+        setTimeout(() => resolve({
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+          headers: new Headers(),
+          redirected: false,
+          type: 'basic',
+          url: '',
+          clone: function() { return this; },
+          body: null,
+          bodyUsed: false,
+          arrayBuffer: async () => new ArrayBuffer(0),
+          blob: async () => new Blob(),
+          formData: async () => new FormData(),
+          json: async () => [],
+          text: async () => ''
+        } as Response), 100)
       )
     );
 
@@ -74,8 +92,10 @@ describe('App Component', () => {
 
   it('should show no results message when search returns empty', async () => {
     globalFetch.mockResolvedValueOnce({
-      json: async () => []
-    });
+      ok: true, 
+      status: 200, 
+      json: async () => [], 
+    } as Response);
 
     render(<App />);
     const input = screen.getByPlaceholderText('Search comments (more than 3 characters)');
